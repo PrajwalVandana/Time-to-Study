@@ -14,6 +14,8 @@ var font3 = DynamicFont.new()
 var new_cell = null
 var highlight_color = Color("#64ff64")
 var outline_style = StyleBoxFlat.new()
+var ending_cell = null
+var game_won = null  # true if the game is won, false if not, null if TBD
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,6 +28,7 @@ func _ready():
 	base_style.set_bg_color(Color(0.5, 0.5, 0.5))
 	outline_style.set_corner_radius_all(radius)
 	outline_style.set_bg_color(highlight_color)
+
 	var shared_font_data = load('res://fonts/Cloude_Regular_Bold_1.02.ttf')
 	font1.font_data = shared_font_data
 	font1.size = 250
@@ -33,9 +36,19 @@ func _ready():
 	font2.size = 200
 	font3.font_data = shared_font_data
 	font3.size = 150
+
+	match globals.difficulty:
+		'easy':
+			ending_cell = 64
+		'medium':
+			ending_cell = 128
+		'hard':
+			ending_cell = 256
+
 	randomize()
 	init_cells()
 	add_new_cell()
+	$Countdown.start()
 
 
 func _draw():
@@ -159,6 +172,12 @@ func _input(event):
 				if rects[r][c][1] == null:
 					checking_game_over = false
 					break
+				elif rects[r][c][1] == ending_cell:
+					game_won = true
+					print('won!')
+					$Countdown.stop()
+					checking_game_over = false
+					break
 				for vec in neighbor_positions(4, r, c):
 					print(vec)
 					if rects[r][c][1] == rects[vec.x][vec.y][1]:
@@ -169,11 +188,14 @@ func _input(event):
 			if not checking_game_over:
 				break
 		if checking_game_over:  # game over
-			print('game over')
+			game_won = false
+			$Countdown.stop()
+			print('lost')
 
 
 func rand_choice(lst):
 	return lst[randi() % lst.size()]
+
 
 func neighbor_positions(size, r, c, diagonals=false):
 	var res = []
@@ -233,3 +255,7 @@ func get_style_box(value):
 	elif value == 128:
 		colored_style.set_bg_color(Color("#e8c760"))
 	return colored_style
+
+
+func _on_Countdown_timeout():
+	return
