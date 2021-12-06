@@ -1,3 +1,5 @@
 extends Node
 
-var difficulty = 'easy'
+var difficulty = 'hard'
+var score = 0
+var game_won = null

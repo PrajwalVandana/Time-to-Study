@@ -2,6 +2,7 @@ extends CanvasItem
 
 export var CELL_PADDING_RATIO = .125
 export var RADIUS_RATIO = .05
+export var highlight_color = Color("#8cff8c")
 
 var cell_size
 var cell_padding
@@ -12,10 +13,8 @@ var font1 = DynamicFont.new()
 var font2 = DynamicFont.new()
 var font3 = DynamicFont.new()
 var new_cell = null
-var highlight_color = Color("#64ff64")
 var outline_style = StyleBoxFlat.new()
 var ending_cell = null
-var game_won = null  # true if the game is won, false if not, null if TBD
 
 
 # Called when the node enters the scene tree for the first time.
@@ -56,17 +55,17 @@ func _draw():
 	for r in range(4):
 		for c in range(4):
 			if rects[r][c] == new_cell:
-				var highlighted_style = get_style_box(rects[r][c][1])
-				highlighted_style.set_bg_color(highlighted_style.get_bg_color().linear_interpolate(highlight_color, 0.4))
-				draw_style_box(highlighted_style, rects[r][c][0])
-				new_cell = null
-				highlight = true
+				# var highlighted_style = get_style_box(rects[r][c][1])
+				# highlighted_style.set_bg_color(highlighted_style.get_bg_color().linear_interpolate(highlight_color, 0.4))
+				# draw_style_box(highlighted_style, rects[r][c][0])
+				# new_cell = null
+				# highlight = true
 
-				# var outline_rect = rects[r][c][0]
-				# outline_rect.position -= Vector2(cell_padding*0.25, cell_padding*0.25)
-				# outline_rect.end += Vector2(cell_padding*0.5, cell_padding*0.5)
-				# draw_style_box(outline_style, outline_rect)
-				# draw_style_box(get_style_box(rects[r][c][1]), rects[r][c][0])
+				var outline_rect = rects[r][c][0]
+				outline_rect.position -= Vector2(cell_padding*0.25, cell_padding*0.25)
+				outline_rect.end += Vector2(cell_padding*0.5, cell_padding*0.5)
+				draw_style_box(outline_style, outline_rect)
+				draw_style_box(get_style_box(rects[r][c][1]), rects[r][c][0])
 			else:
 				draw_style_box(get_style_box(rects[r][c][1]), rects[r][c][0])
 			if rects[r][c][1] != null:
@@ -96,6 +95,8 @@ func _draw():
 
 
 func _input(event):
+	$Countdown.paused = true
+	print($Countdown.time_left)
 	var rects_copy = rects.duplicate(true)
 	if event.is_action_pressed('ui_left'):
 		for r in range(4):
@@ -162,35 +163,32 @@ func _input(event):
 						rects[i+1][c][1] = rects[i][c][1]
 					rects[0][c][1] = null
 	else:
+		$Countdown.paused = false
 		return
 	if rects_copy != rects:
 		add_new_cell()
 		update()
-		var checking_game_over = true
+		for r in range(4):
+			for c in range(4):
+				if rects[r][c][1] == ending_cell:
+					globals.game_won = true
+					globals.score = 100
+					print(get_tree().change_scene("res://Score.tscn"))
+					return
+
 		for r in range(4):
 			for c in range(4):
 				if rects[r][c][1] == null:
-					checking_game_over = false
-					break
-				elif rects[r][c][1] == ending_cell:
-					game_won = true
-					print('won!')
-					$Countdown.stop()
-					checking_game_over = false
-					break
+					$Countdown.paused = false
+					return
 				for vec in neighbor_positions(4, r, c):
-					print(vec)
 					if rects[r][c][1] == rects[vec.x][vec.y][1]:
-						checking_game_over = false
-						break
-				if not checking_game_over:
-					break
-			if not checking_game_over:
-				break
-		if checking_game_over:  # game over
-			game_won = false
-			$Countdown.stop()
-			print('lost')
+						$Countdown.paused = false
+						return
+
+		globals.game_won = false
+		globals.score = get_score()
+		print(get_tree().change_scene("res://Score.tscn"))
 
 
 func rand_choice(lst):
@@ -257,5 +255,16 @@ func get_style_box(value):
 	return colored_style
 
 
+func get_score():
+	var max_cell = 0
+	for r in range(4):
+		for c in range(4):
+			if rects[r][c][1] != null:
+				max_cell = max(rects[r][c][1], max_cell)
+	return max_cell*100/ending_cell
+
+
 func _on_Countdown_timeout():
-	return
+	globals.score = get_score()
+	globals.game_won = false
+	print(get_tree().change_scene("res://Score.tscn"))
