@@ -7,6 +7,7 @@ export var col2 = Color(0, 0, 1)
 export var col3 = Color(0, 1, 0)
 export var vial_padding_bottom = 5
 export var liquid_size = 96
+export var transition_color = Color("#25ff27")
 
 var vials
 var vial_rects = []

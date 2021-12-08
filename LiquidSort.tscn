@@ -1,14 +1,20 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://LiquidSort.gd" type="Script" id=1]
 [ext_resource path="res://assets/Bubble.png" type="Texture" id=2]
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.273529, 1 )
-colors = PoolColorArray( 1, 1, 1, 0.00392157, 1, 1, 1, 1, 1, 1, 1, 0.784314 )
+offsets = PoolRealArray( 0, 0.219178, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.00392157, 1, 1, 1, 1, 1, 1, 1, 1 )
 
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.958838, 0.874099 ), -0.487238, -3.35595, 0, 0, Vector2( 1, 0 ), -2.88135, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
 
 [sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 1
@@ -20,6 +26,7 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 0.02
 scale_random = 0.02
+scale_curve = SubResource( 5 )
 color = Color( 1, 1, 1, 0.392157 )
 color_ramp = SubResource( 3 )
 

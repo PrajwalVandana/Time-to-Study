@@ -3,6 +3,8 @@ extends CanvasItem
 export var CELL_PADDING_RATIO = .125
 export var RADIUS_RATIO = .05
 export var highlight_color = Color("#8cff8c")
+export var transition_color = Color("#0070ff")
+export var transition_anim = "Fade"
 
 var cell_size
 var cell_padding
@@ -59,6 +61,8 @@ func _ready():
 	init_cells()
 	add_new_cell()
 	$Countdown.start(countdown_time)
+	TransitionPlayer.change_color(transition_color)
+	TransitionPlayer.transition_to("res://Score.tscn", transition_anim)
 
 
 func offset(cell):
@@ -209,7 +213,7 @@ func _input(event):
 				if rects[r][c][1] == ending_cell:
 					globals.game_won = true
 					globals.score = 100
-					print(get_tree().change_scene("res://Score.tscn"))
+					TransitionPlayer.transition_to("res://Score.tcsn", transition_anim)
 					return
 
 		for r in range(4):
@@ -224,7 +228,7 @@ func _input(event):
 
 		globals.game_won = false
 		globals.score = get_score()
-		print(get_tree().change_scene("res://Score.tscn"))
+		TransitionPlayer.transition_to("res://Score.tcsn", transition_anim)
 
 
 func rand_choice(lst):
@@ -303,4 +307,4 @@ func get_score():
 func _on_Countdown_timeout():
 	globals.score = get_score()
 	globals.game_won = false
-	print(get_tree().change_scene("res://Score.tscn"))
+	TransitionPlayer.transition_to("res://Score.tcsn", transition_anim)
