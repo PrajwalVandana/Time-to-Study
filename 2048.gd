@@ -12,6 +12,7 @@ var rects = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 var font1 = DynamicFont.new()
 var font2 = DynamicFont.new()
 var font3 = DynamicFont.new()
+var font4 = DynamicFont.new()
 var new_cell = null
 var outline_style = StyleBoxFlat.new()
 var ending_cell = null
@@ -19,6 +20,8 @@ var ending_cell = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$TimeDisplay.set("custom_fonts/normal_font", font1)
+	$EndingCellDisplay.set("custom_fonts/normal_font", font4)
 	var screen_size = get_viewport_rect().size
 	cell_size = min(screen_size.x, screen_size.y) / (5 * CELL_PADDING_RATIO + 4)
 	cell_padding = CELL_PADDING_RATIO * cell_size
@@ -28,39 +31,71 @@ func _ready():
 	outline_style.set_corner_radius_all(radius)
 	outline_style.set_bg_color(highlight_color)
 
-	var shared_font_data = load('res://fonts/Cloude_Regular_Bold_1.02.ttf')
+	var shared_font_data = load(globals.font_dir)
 	font1.font_data = shared_font_data
 	font1.size = 250
 	font2.font_data = shared_font_data
 	font2.size = 200
 	font3.font_data = shared_font_data
 	font3.size = 150
+	font4.font_data = shared_font_data
+	font4.size = 75
 
+	var countdown_time
 	match globals.difficulty:
 		'easy':
 			ending_cell = 64
+			countdown_time = 45
 		'medium':
 			ending_cell = 128
+			countdown_time = 60
 		'hard':
-			ending_cell = 256
+			ending_cell = 128
+			countdown_time = 45
 
+	$EndingCellDisplay.clear()
+	$EndingCellDisplay.append_bbcode("[center]"+"Reach cell: "+"[/center]")
 	randomize()
 	init_cells()
 	add_new_cell()
-	$Countdown.start()
+	$Countdown.start(countdown_time)
+
+
+func offset(cell):
+	match len(str(cell)):
+		1:
+			return Vector2(cell_size * 0.25, cell_size * 0.75)
+		2:
+			return Vector2(cell_size * 0.12, cell_size * 0.72)
+		3:
+			return Vector2(cell_size * 0.06, cell_size * 0.65)
+
+
+func get_font(cell):
+	match len(str(cell)):
+		1:
+			return font1
+		2:
+			return font2
+		3:
+			return font3
 
 
 func _draw():
 	var highlight = false
+	draw_style_box(get_style_box(ending_cell), Rect2($EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4, $EndingCellDisplay.rect_size/2))
+	draw_string(get_font(ending_cell), $EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4 + offset(ending_cell)+Vector2(12, 0), str(ending_cell))
 	for r in range(4):
 		for c in range(4):
 			if rects[r][c] == new_cell:
+				# # highlight new cell
 				# var highlighted_style = get_style_box(rects[r][c][1])
 				# highlighted_style.set_bg_color(highlighted_style.get_bg_color().linear_interpolate(highlight_color, 0.4))
 				# draw_style_box(highlighted_style, rects[r][c][0])
 				# new_cell = null
 				# highlight = true
 
+				# outline cell
 				var outline_rect = rects[r][c][0]
 				outline_rect.position -= Vector2(cell_padding*0.25, cell_padding*0.25)
 				outline_rect.end += Vector2(cell_padding*0.5, cell_padding*0.5)
@@ -69,29 +104,30 @@ func _draw():
 			else:
 				draw_style_box(get_style_box(rects[r][c][1]), rects[r][c][0])
 			if rects[r][c][1] != null:
-				var offset
 				var value_str = str(rects[r][c][1])
 				var font
 				if len(value_str) == 1:
 					font = font1
-					offset = Vector2(cell_size * 0.25, cell_size * 0.75)
 				elif len(value_str) == 2:
 					font = font2
-					offset = Vector2(cell_size * 0.12, cell_size * 0.72)
 				elif len(value_str) == 3:
 					font = font3
-					offset = Vector2(cell_size * 0.06, cell_size * 0.65)
 				if highlight:
-					draw_string(font, rects[r][c][0].position + offset, value_str)
+					draw_string(font, rects[r][c][0].position + offset(rects[r][c][1]), value_str)
 					highlight = false
 				else:
-					draw_string(font, rects[r][c][0].position + offset, value_str)
-
+					draw_string(font, rects[r][c][0].position + offset(rects[r][c][1]), value_str)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta):
-# 	pass
+func _process(_delta):
+	$TimeDisplay.clear()
+	$TimeDisplay.append_bbcode("[center]"+fmt_time($Countdown.time_left)+"[/center]")
+
+
+func fmt_time(secs):
+	secs = int(secs)
+	return str(secs/60).pad_zeros(1)+":"+str(secs%60).pad_zeros(2)
 
 
 func _input(event):

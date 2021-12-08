@@ -9,4 +9,22 @@ script = ExtResource( 1 )
 wait_time = 60.0
 one_shot = true
 
+[node name="TimeDisplay" type="RichTextLabel" parent="."]
+margin_left = 644.0
+margin_top = 40.0
+margin_right = 956.0
+margin_bottom = 300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EndingCellDisplay" type="RichTextLabel" parent="."]
+margin_left = 644.0
+margin_top = 300.0
+margin_right = 956.0
+margin_bottom = 560.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="timeout" from="Countdown" to="." method="_on_Countdown_timeout"]
