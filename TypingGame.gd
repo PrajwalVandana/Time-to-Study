@@ -4,11 +4,14 @@ export var words_alpha = 0.5
 export var correct_char_color = Color("#ffffff")
 export var incorrect_char_color = Color("#f90000")
 export var untyped_color = Color("#808080")
-export var transition_color = Color("#fdce00")
+export var transition_anim = "Fade"
+export var num_chars = 200
 
 var font = DynamicFont.new()
 var chars_to_type = ""
 var chars_typed = 0
+var chars_correct = 0
+var time_elapsed = 0
 const ignored_chars = [
 	KEY_SHIFT,
 	KEY_MASK_CMD,
@@ -40,7 +43,7 @@ func _ready():
 	var rand_word_index
 	var rand_word
 	var total_chars = 0
-	while total_chars <= 201:
+	while total_chars <= num_chars+1:
 		rand_word_index = randi() % len(words)
 		rand_word = words[rand_word_index]
 		words.remove(rand_word_index)
@@ -58,6 +61,7 @@ func _ready():
 	chars_to_type = words_to_type.join(" ")
 	for c in chars_to_type:
 		$Words.bbcode_text += colored_bbcode(c, "#"+untyped_color.to_html(false))
+	Transition.change_color(globals.minigame_color)
 
 
 func rand_choice(lst):
@@ -65,22 +69,24 @@ func rand_choice(lst):
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta):
-# 	pass
+func _process(delta):
+	time_elapsed += delta
 
 
 func _input(event):
+	if chars_typed == len(chars_to_type):
+		return
 	if event is InputEventKey and event.pressed:
 		# char format: "[color=#ffffff]a[/color]"
 		if event.scancode in ignored_chars:
 			return
-
 		if event.unicode == ord(chars_to_type[chars_typed]):
 			$Words.bbcode_text = (
 				$Words.bbcode_text.substr(0, 24 * chars_typed + 7)
 				+ "#" + correct_char_color.to_html(false)
 				+ $Words.bbcode_text.substr(24 * chars_typed + 14)
 			)
+			chars_correct += 1
 		else:
 			if chars_to_type[chars_typed] == " ":
 				$Words.bbcode_text = (
@@ -97,7 +103,8 @@ func _input(event):
 				)
 		chars_typed += 1
 		if chars_typed == len(chars_to_type):
-			TransitionPlayer.transition_to("res://Score.tscn")
+			globals.score = int(chars_correct*100.0/chars_typed)
+			Transition.transition_to("res://Score.tscn", transition_anim)
 
 
 func colored_bbcode(text, color):

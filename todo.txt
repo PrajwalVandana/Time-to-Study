@@ -1,0 +1,5 @@
+- typing game scoring (with stopwatch)
+- select what you do outside of school every day
+- main menu
+- history minigame
+- switch liquid sort to stopwatch scoring

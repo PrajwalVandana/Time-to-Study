@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Score.gd" type="Script" id=1]
-[ext_resource path="res://ScoreLabel.gd" type="Script" id=2]
+[ext_resource path="res://global_theme.tres" type="Theme" id=1]
 [ext_resource path="res://ScoreManager.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://fonts/Cloude_Regular_Bold_1.02.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 100
+font_data = SubResource( 1 )
 
 [node name="ScoreManager" type="Node"]
 script = ExtResource( 3 )
@@ -19,7 +25,6 @@ margin_bottom = -2.0
 bbcode_enabled = true
 bbcode_text = "[center]Score[/center]"
 text = "Score"
-script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -34,7 +39,24 @@ margin_top = -122.0
 margin_right = 255.0
 margin_bottom = 130.0
 bbcode_enabled = true
-script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -331.0
+margin_top = -159.0
+margin_right = -44.0
+margin_bottom = -52.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Continue >"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

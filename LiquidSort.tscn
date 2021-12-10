@@ -32,7 +32,7 @@ color_ramp = SubResource( 3 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
-col1 = Color( 0.67451, 0.172549, 0.172549, 1 )
+col1 = Color( 0.682353, 0.0784314, 0.0784314, 1 )
 col2 = Color( 0.235294, 0.235294, 0.8, 1 )
 col3 = Color( 0.207843, 0.615686, 0.207843, 1 )
 

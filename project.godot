@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 [autoload]
 
 globals="*res://globals.gd"
-TransitionPlayer="*res://TransitionPlayer.tscn"
+Transition="*res://Transition.tscn"
 
 [physics]
 

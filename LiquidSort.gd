@@ -7,7 +7,7 @@ export var col2 = Color(0, 0, 1)
 export var col3 = Color(0, 1, 0)
 export var vial_padding_bottom = 5
 export var liquid_size = 96
-export var transition_color = Color("#25ff27")
+export var transition_anim = "Fade"
 
 var vials
 var vial_rects = []
@@ -28,6 +28,7 @@ func _ready():
 			vials = [[col1, col1, col1], [col2, col2, col2], [col3, col3, col3]]
 			vial_rects = [0, 0, 0]
 	randomize_vials()
+	Transition.change_color(globals.minigame_color)
 	$Countdown.start()
 
 
@@ -111,7 +112,6 @@ func rand_choice(lst):
 func _input(event):
 	$Countdown.paused = true
 	if event is InputEventMouseButton and event.pressed:
-		print('Mouse click: ', event.position)
 		if highlighted_vial != null:  # a vial was selected
 			for i in range(len(vial_rects)):
 				if vial_rects[i].has_point(event.position):
@@ -132,7 +132,7 @@ func _input(event):
 					return
 		globals.game_won = true
 		globals.score = get_score()
-		print(get_tree().change_scene("res://Score.tscn") == OK)
+		Transition.transition_to("res://Score.tscn", transition_anim)
 	else:
 		$Countdown.paused = false
 
@@ -141,12 +141,7 @@ func get_score():
 	return floor($Countdown.time_left*100/$Countdown.wait_time)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta):
-#	pass
-
-
 func _on_Countdown_timeout():
 	globals.score = get_score()
 	globals.game_won = false
-	print(get_tree().change_scene("res://Score.tscn") == OK)
+	Transition.transition_to("res://Score.tscn", transition_anim)
