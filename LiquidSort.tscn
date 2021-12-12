@@ -30,8 +30,12 @@ scale_curve = SubResource( 5 )
 color = Color( 1, 1, 1, 0.392157 )
 color_ramp = SubResource( 3 )
 
-[node name="Main" type="Node2D"]
+[node name="LiquidSort" type="Control"]
+modulate = Color( 1, 1, 1, 0.784314 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 col1 = Color( 0.682353, 0.0784314, 0.0784314, 1 )
 col2 = Color( 0.235294, 0.235294, 0.8, 1 )
 col3 = Color( 0.207843, 0.615686, 0.207843, 1 )
@@ -79,5 +83,12 @@ speed_scale = 0.1
 visibility_rect = Rect2( -100, 0, 200, 100 )
 process_material = SubResource( 1 )
 texture = ExtResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="timeout" from="Countdown" to="." method="_on_Countdown_timeout"]

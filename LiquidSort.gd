@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 export var vial_color = Color(0.5, 0.5, 0.5)
 export var highlight_color = Color("#eadabe")
@@ -7,7 +7,7 @@ export var col2 = Color(0, 0, 1)
 export var col3 = Color(0, 1, 0)
 export var vial_padding_bottom = 5
 export var liquid_size = 96
-export var transition_anim = "Fade"
+export var transition_anim = "ScoreTransition"
 
 var vials
 var vial_rects = []
@@ -28,7 +28,6 @@ func _ready():
 			vials = [[col1, col1, col1], [col2, col2, col2], [col3, col3, col3]]
 			vial_rects = [0, 0, 0]
 	randomize_vials()
-	Transition.change_color(globals.minigame_color)
 	$Countdown.start()
 
 
@@ -130,18 +129,18 @@ func _input(event):
 				if vial[i] != vial[i-1]:
 					$Countdown.paused = false
 					return
-		globals.game_won = true
-		globals.score = get_score()
+		globals.minigame_score = get_score()
+		Transition.change_color(globals.minigame_color)
 		Transition.transition_to("res://Score.tscn", transition_anim)
 	else:
 		$Countdown.paused = false
 
 
 func get_score():
-	return floor($Countdown.time_left*100/$Countdown.wait_time)
+	return floor($Countdown.time_left*100/$Countdown.wait_time) + globals.science_preparedness
 
 
 func _on_Countdown_timeout():
-	globals.score = get_score()
-	globals.game_won = false
+	globals.minigame_score = get_score()
+	Transition.change_color(globals.minigame_color)
 	Transition.transition_to("res://Score.tscn", transition_anim)

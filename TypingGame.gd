@@ -1,10 +1,10 @@
-extends Node
+extends Control
 
 export var words_alpha = 0.5
-export var correct_char_color = Color("#ffffff")
+export var correct_char_color = Color("#ffffff")  # FIXME: not readable
 export var incorrect_char_color = Color("#f90000")
-export var untyped_color = Color("#808080")
-export var transition_anim = "Fade"
+export var untyped_color = Color("#808080")  # FIXME: not readable
+export var transition_anim = "ScoreTransition"
 export var num_chars = 200
 
 var font = DynamicFont.new()
@@ -61,7 +61,6 @@ func _ready():
 	chars_to_type = words_to_type.join(" ")
 	for c in chars_to_type:
 		$Words.bbcode_text += colored_bbcode(c, "#"+untyped_color.to_html(false))
-	Transition.change_color(globals.minigame_color)
 
 
 func rand_choice(lst):
@@ -103,7 +102,8 @@ func _input(event):
 				)
 		chars_typed += 1
 		if chars_typed == len(chars_to_type):
-			globals.score = int(chars_correct*100.0/chars_typed)
+			globals.minigame_score = int(chars_correct*100.0/chars_typed) + globals.english_preparedness
+			Transition.change_color(globals.minigame_color)
 			Transition.transition_to("res://Score.tscn", transition_anim)
 
 

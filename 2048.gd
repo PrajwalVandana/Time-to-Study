@@ -1,9 +1,9 @@
-extends CanvasItem
+extends Control
 
 export var CELL_PADDING_RATIO = .125
 export var RADIUS_RATIO = .05
 export var highlight_color = Color("#8cff8c")
-export var transition_anim = "Fade"
+export var transition_anim = "ScoreTransition"
 
 var cell_size
 var cell_padding
@@ -60,7 +60,6 @@ func _ready():
 	init_cells()
 	add_new_cell()
 	$Countdown.start(countdown_time)
-	Transition.change_color(globals.minigame_color)
 	# Transition.transition_to("res://Score.tscn", transition_anim)
 
 
@@ -74,7 +73,7 @@ func offset(cell):
 			return Vector2(cell_size * 0.06, cell_size * 0.65)
 
 
-func get_font(cell):
+func get_cell_font(cell):  # get_font is reserved
 	match len(str(cell)):
 		1:
 			return font1
@@ -87,7 +86,7 @@ func get_font(cell):
 func _draw():
 	var highlight = false
 	draw_style_box(get_style_box(ending_cell), Rect2($EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4, $EndingCellDisplay.rect_size/2))
-	draw_string(get_font(ending_cell), $EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4 + offset(ending_cell)+Vector2(12, 0), str(ending_cell))
+	draw_string(get_cell_font(ending_cell), $EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4 + offset(ending_cell)+Vector2(12, 0), str(ending_cell))
 	for r in range(4):
 		for c in range(4):
 			if rects[r][c] == new_cell:
@@ -135,7 +134,6 @@ func fmt_time(secs):
 
 func _input(event):
 	$Countdown.paused = true
-	print($Countdown.time_left)
 	var rects_copy = rects.duplicate(true)
 	if event.is_action_pressed('ui_left'):
 		for r in range(4):
@@ -210,8 +208,8 @@ func _input(event):
 		for r in range(4):
 			for c in range(4):
 				if rects[r][c][1] == ending_cell:
-					globals.game_won = true
-					globals.score = 100
+					globals.minigame_score = 100
+					Transition.change_color(globals.minigame_color)
 					Transition.transition_to("res://Score.tscn", transition_anim)
 					return
 
@@ -225,8 +223,8 @@ func _input(event):
 						$Countdown.paused = false
 						return
 
-		globals.game_won = false
-		globals.score = get_score()
+		globals.minigame_score = get_score()
+		Transition.change_color(globals.minigame_color)
 		Transition.transition_to("res://Score.tscn", transition_anim)
 
 
@@ -300,10 +298,10 @@ func get_score():
 		for c in range(4):
 			if rects[r][c][1] != null:
 				max_cell = max(rects[r][c][1], max_cell)
-	return max_cell*100/ending_cell
+	return max_cell*100/ending_cell + globals.math_preparedness
 
 
 func _on_Countdown_timeout():
-	globals.score = get_score()
-	globals.game_won = false
+	globals.minigame_score = get_score()
+	Transition.change_color(globals.minigame_color)
 	Transition.transition_to("res://Score.tscn", transition_anim)

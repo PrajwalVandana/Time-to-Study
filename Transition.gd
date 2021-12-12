@@ -2,8 +2,10 @@ extends Node2D
 
 var path = ""
 
+# func _ready():
+# 	transition_to("res://Main.tscn", "ScoreTransition")
 
-func transition_to(scene, anim):  # FIXME: transition is rendered behind the scene
+func transition_to(scene, anim):
 	path = scene
 	$TransitionPlayer.play(anim)
 	self.z_index = VisualServer.CANVAS_ITEM_Z_MAX

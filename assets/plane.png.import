@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Bubble.png-1fb5488db13d635f578538893075ab91.stex"
+path="res://.import/plane.png-33879e5de9b30785d06ff27a3ae341ea.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Bubble.png"
-dest_files=[ "res://.import/Bubble.png-1fb5488db13d635f578538893075ab91.stex" ]
+source_file="res://assets/plane.png"
+dest_files=[ "res://.import/plane.png-33879e5de9b30785d06ff27a3ae341ea.stex" ]
 
 [params]
 

@@ -1,9 +1,20 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://TypingGame.gd" type="Script" id=1]
+[ext_resource path="res://minigame_background.gdshader" type="Shader" id=2]
+[ext_resource path="res://assets/english.png" type="Texture" id=3]
 
-[node name="Main" type="Node"]
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/radius = 1.0
+
+[node name="TypingGame" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TypedWords" type="RichTextLabel" parent="."]
 margin_left = 10.0
@@ -22,3 +33,12 @@ bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.784314 )
+show_behind_parent = true
+material = SubResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true

@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://global_theme.tres" type="Theme" id=1]
+[ext_resource path="res://Home.gd" type="Script" id=2]
+
+[node name="Home" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="English" type="Button" parent="."]
+margin_left = 97.0
+margin_top = 406.0
+margin_right = 247.0
+margin_bottom = 506.0
+theme = ExtResource( 1 )
+toggle_mode = true
+text = "English"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="History" type="Button" parent="."]
+margin_left = 267.0
+margin_top = 406.0
+margin_right = 417.0
+margin_bottom = 506.0
+theme = ExtResource( 1 )
+toggle_mode = true
+text = "History"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Math" type="Button" parent="."]
+margin_left = 437.0
+margin_top = 406.0
+margin_right = 587.0
+margin_bottom = 506.0
+theme = ExtResource( 1 )
+toggle_mode = true
+text = "Math"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Science" type="Button" parent="."]
+margin_left = 607.0
+margin_top = 406.0
+margin_right = 757.0
+margin_bottom = 506.0
+theme = ExtResource( 1 )
+toggle_mode = true
+text = "Science"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Relax" type="Button" parent="."]
+margin_left = 777.0
+margin_top = 406.0
+margin_right = 927.0
+margin_bottom = 506.0
+theme = ExtResource( 1 )
+toggle_mode = true
+text = "Relax"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="English" to="." method="_on_English_pressed"]
+[connection signal="pressed" from="History" to="." method="_on_History_pressed"]
+[connection signal="pressed" from="Math" to="." method="_on_Math_pressed"]
+[connection signal="pressed" from="Science" to="." method="_on_Science_pressed"]
+[connection signal="pressed" from="Relax" to="." method="_on_Relax_pressed"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
