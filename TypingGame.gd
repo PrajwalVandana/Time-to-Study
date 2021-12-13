@@ -4,7 +4,7 @@ export var words_alpha = 0.5
 export var correct_char_color = Color("#ffffff")  # FIXME: not readable
 export var incorrect_char_color = Color("#f90000")
 export var untyped_color = Color("#808080")  # FIXME: not readable
-export var transition_anim = "ScoreTransition"
+export var transition_anim = "Fade"
 export var num_chars = 200
 
 var font = DynamicFont.new()
@@ -61,6 +61,11 @@ func _ready():
 	chars_to_type = words_to_type.join(" ")
 	for c in chars_to_type:
 		$Words.bbcode_text += colored_bbcode(c, "#"+untyped_color.to_html(false))
+	Transition.get_node("AmbientAudio").stream_paused = true
+	if Transition.get_node("FastAudio").stream_paused:
+		Transition.get_node("FastAudio").stream_paused = false
+	else:
+		Transition.get_node("FastAudio").play()
 
 
 func rand_choice(lst):
@@ -102,7 +107,7 @@ func _input(event):
 				)
 		chars_typed += 1
 		if chars_typed == len(chars_to_type):
-			globals.minigame_score = int(chars_correct*100.0/chars_typed) + globals.english_preparedness
+			update_score(int(chars_correct*80.0/chars_typed) + globals.english_preparedness)
 			Transition.change_color(globals.minigame_color)
 			Transition.transition_to("res://Score.tscn", transition_anim)
 
@@ -110,3 +115,14 @@ func _input(event):
 func colored_bbcode(text, color):
 	"""Colored text, color as hex code."""
 	return "[color=%s]%s[/color]" % [color, text]
+
+
+func update_score(score):
+	if globals.english_score[0] == null:
+		assert(globals.english_score[1] == 0, "Shouldn't happen.")
+		globals.minigame_score = score
+		globals.english_score = [score, 1]
+		return
+	globals.minigame_score = score
+	globals.english_score[0] = (globals.english_score[0]*globals.english_score[1]+score)/(globals.english_score[1]+1)
+	globals.english_score[1] += 1

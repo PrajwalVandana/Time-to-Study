@@ -1,7 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://LiquidSort.gd" type="Script" id=1]
 [ext_resource path="res://assets/Bubble.png" type="Texture" id=2]
+[ext_resource path="res://assets/science.png" type="Texture" id=3]
+[ext_resource path="res://minigame_background.gdshader" type="Shader" id=4]
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0, 0.219178, 1 )
@@ -30,8 +32,14 @@ scale_curve = SubResource( 5 )
 color = Color( 1, 1, 1, 0.392157 )
 color_ramp = SubResource( 3 )
 
+[sub_resource type="ShaderMaterial" id=6]
+shader = ExtResource( 4 )
+shader_param/radius = 1.0
+
 [node name="LiquidSort" type="Control"]
 modulate = Color( 1, 1, 1, 0.784314 )
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -84,9 +92,14 @@ visibility_rect = Rect2( -100, 0, 200, 100 )
 process_material = SubResource( 1 )
 texture = ExtResource( 2 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.588235 )
+show_behind_parent = true
+material = SubResource( 6 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -1,7 +1,31 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://global_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Home.gd" type="Script" id=2]
+[ext_resource path="res://minigame_background.gdshader" type="Shader" id=3]
+[ext_resource path="res://assets/home1.png" type="Texture" id=4]
+[ext_resource path="res://assets/home3.png" type="Texture" id=5]
+[ext_resource path="res://assets/home2.png" type="Texture" id=6]
+[ext_resource path="res://assets/home4.png" type="Texture" id=7]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/radius = 1.0
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://fonts/Cloude_Regular_Bold_1.02.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 100
+font_data = SubResource( 3 )
 
 [node name="Home" type="Control"]
 anchor_right = 1.0
@@ -20,10 +44,12 @@ __meta__ = {
 }
 
 [node name="English" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 97.0
 margin_top = 406.0
-margin_right = 247.0
-margin_bottom = 506.0
+margin_right = -777.0
+margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
 text = "English"
@@ -31,11 +57,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="English"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_right = 75.0
+margin_bottom = 51.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="History" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 267.0
 margin_top = 406.0
-margin_right = 417.0
-margin_bottom = 506.0
+margin_right = -607.0
+margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
 text = "History"
@@ -43,11 +84,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="History"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_right = 75.0
+margin_bottom = 51.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Math" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 437.0
 margin_top = 406.0
-margin_right = 587.0
-margin_bottom = 506.0
+margin_right = -437.0
+margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
 text = "Math"
@@ -55,11 +111,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="Math"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_right = 75.0
+margin_bottom = 51.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Science" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 607.0
 margin_top = 406.0
-margin_right = 757.0
-margin_bottom = 506.0
+margin_right = -267.0
+margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
 text = "Science"
@@ -67,11 +138,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="Science"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_right = 75.0
+margin_bottom = 51.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Relax" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 777.0
 margin_top = 406.0
-margin_right = 927.0
-margin_bottom = 506.0
+margin_right = -97.0
+margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
 text = "Relax"
@@ -79,11 +165,55 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="Relax"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_right = 75.0
+margin_bottom = 51.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Tween" type="Tween" parent="."]
 
-[node name="TextureRect" type="TextureRect" parent="."]
-anchor_right = 1.0
+[node name="AnimBackground" type="AnimatedSprite" parent="."]
+modulate = Color( 1, 1, 1, 0.588235 )
+show_behind_parent = true
+material = SubResource( 1 )
+scale = Vector2( 5.7, 6 )
+frames = SubResource( 2 )
+playing = true
+centered = false
+
+[node name="Label" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -207.5
+margin_right = 207.5
+margin_bottom = 462.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContinueButton" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+margin_left = -97.0
+margin_top = -79.0
+margin_right = 97.0
+margin_bottom = -24.0
+theme = ExtResource( 1 )
+text = "Continue >"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -94,3 +224,4 @@ __meta__ = {
 [connection signal="pressed" from="Science" to="." method="_on_Science_pressed"]
 [connection signal="pressed" from="Relax" to="." method="_on_Relax_pressed"]
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="pressed" from="ContinueButton" to="." method="_on_ContinueButton_pressed"]

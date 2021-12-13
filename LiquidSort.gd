@@ -7,7 +7,7 @@ export var col2 = Color(0, 0, 1)
 export var col3 = Color(0, 1, 0)
 export var vial_padding_bottom = 5
 export var liquid_size = 96
-export var transition_anim = "ScoreTransition"
+export var transition_anim = "Fade"
 
 var vials
 var vial_rects = []
@@ -28,8 +28,12 @@ func _ready():
 			vials = [[col1, col1, col1], [col2, col2, col2], [col3, col3, col3]]
 			vial_rects = [0, 0, 0]
 	randomize_vials()
+	Transition.get_node("AmbientAudio").stream_paused = true
+	if Transition.get_node("FastAudio").stream_paused:
+		Transition.get_node("FastAudio").stream_paused = false
+	else:
+		Transition.get_node("FastAudio").play()
 	$Countdown.start()
-
 
 func _draw():
 	var screen_size = get_viewport_rect().size
@@ -54,9 +58,13 @@ func _draw():
 			vial_rect,
 			this_vial_color
 		)
-		bubbles.position = Vector2(vial_rect.position.x+vial_rect.size.x/2, vial_rect.position.y+vial_rect.size.y-vial_padding_bottom-12)
-		bubbles.process_material.emission_sphere_radius = 2
-		bubbles.lifetime = pow(1.25*liquid_size*len(vials[i])/bubbles.process_material.gravity.y, 0.5)*0.5
+		if len(vials[i]):
+			bubbles.visible = true
+			bubbles.position = Vector2(vial_rect.position.x+vial_rect.size.x/2, vial_rect.position.y+vial_rect.size.y-vial_padding_bottom-12)
+			bubbles.process_material.emission_sphere_radius = 2
+			bubbles.lifetime = pow(1.25*liquid_size*len(vials[i])/bubbles.process_material.gravity.y, 0.5)*0.5
+		else:
+			bubbles.visible = false
 		for j in range(len(vials[i])):
 			draw_rect(Rect2(
 				Vector2(
@@ -129,7 +137,7 @@ func _input(event):
 				if vial[i] != vial[i-1]:
 					$Countdown.paused = false
 					return
-		globals.minigame_score = get_score()
+		update_score(get_score())
 		Transition.change_color(globals.minigame_color)
 		Transition.transition_to("res://Score.tscn", transition_anim)
 	else:
@@ -137,10 +145,21 @@ func _input(event):
 
 
 func get_score():
-	return floor($Countdown.time_left*100/$Countdown.wait_time) + globals.science_preparedness
+	return floor($Countdown.time_left*80/$Countdown.wait_time) + globals.science_preparedness
 
 
 func _on_Countdown_timeout():
-	globals.minigame_score = get_score()
+	update_score(get_score())
 	Transition.change_color(globals.minigame_color)
 	Transition.transition_to("res://Score.tscn", transition_anim)
+
+
+func update_score(score):
+	if globals.science_score[0] == null:
+		assert(globals.science_score[1] == 0, "Shouldn't happen.")
+		globals.minigame_score = score
+		globals.science_score = [score, 1]
+		return
+	globals.minigame_score = score
+	globals.science_score[0] = (globals.science_score[0]*globals.science_score[1]+score)/(globals.science_score[1]+1)
+	globals.science_score[1] += 1

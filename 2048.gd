@@ -3,7 +3,7 @@ extends Control
 export var CELL_PADDING_RATIO = .125
 export var RADIUS_RATIO = .05
 export var highlight_color = Color("#8cff8c")
-export var transition_anim = "ScoreTransition"
+export var transition_anim = "Fade"
 
 var cell_size
 var cell_padding
@@ -60,6 +60,11 @@ func _ready():
 	init_cells()
 	add_new_cell()
 	$Countdown.start(countdown_time)
+	Transition.get_node("AmbientAudio").stream_paused = true
+	if Transition.get_node("FastAudio").stream_paused:
+		Transition.get_node("FastAudio").stream_paused = false
+	else:
+		Transition.get_node("FastAudio").play()
 	# Transition.transition_to("res://Score.tscn", transition_anim)
 
 
@@ -73,7 +78,7 @@ func offset(cell):
 			return Vector2(cell_size * 0.06, cell_size * 0.65)
 
 
-func get_cell_font(cell):  # get_font is reserved
+func get_cell_font(cell):  # NOTE: get_font is reserved
 	match len(str(cell)):
 		1:
 			return font1
@@ -208,7 +213,7 @@ func _input(event):
 		for r in range(4):
 			for c in range(4):
 				if rects[r][c][1] == ending_cell:
-					globals.minigame_score = 100
+					update_score(get_score())
 					Transition.change_color(globals.minigame_color)
 					Transition.transition_to("res://Score.tscn", transition_anim)
 					return
@@ -223,7 +228,7 @@ func _input(event):
 						$Countdown.paused = false
 						return
 
-		globals.minigame_score = get_score()
+		update_score(get_score())
 		Transition.change_color(globals.minigame_color)
 		Transition.transition_to("res://Score.tscn", transition_anim)
 
@@ -298,10 +303,21 @@ func get_score():
 		for c in range(4):
 			if rects[r][c][1] != null:
 				max_cell = max(rects[r][c][1], max_cell)
-	return max_cell*100/ending_cell + globals.math_preparedness
+	return max_cell*80/ending_cell + globals.math_preparedness
 
 
 func _on_Countdown_timeout():
-	globals.minigame_score = get_score()
+	update_score(get_score())
 	Transition.change_color(globals.minigame_color)
 	Transition.transition_to("res://Score.tscn", transition_anim)
+
+
+func update_score(score):
+	if globals.math_score[0] == null:
+		assert(globals.math_score[1] == 0, "Shouldn't happen.")
+		globals.minigame_score = score
+		globals.math_score = [score, 1]
+		return
+	globals.minigame_score = score
+	globals.math_score[0] = (globals.math_score[0]*globals.math_score[1]+score)/(globals.math_score[1]+1)
+	globals.math_score[1] += 1

@@ -1,14 +1,14 @@
-extends Node2D
+extends CanvasLayer
 
 var path = ""
 
 # func _ready():
-# 	transition_to("res://Main.tscn", "ScoreTransition")
+# 	transition_to("res://Main.tscn", "Fade")
 
 func transition_to(scene, anim):
 	path = scene
-	$TransitionPlayer.play(anim)
-	self.z_index = VisualServer.CANVAS_ITEM_Z_MAX
+	$Transition/TransitionPlayer.play(anim)
+	# self.z_index = VisualServer.CANVAS_ITEM_Z_MAX
 
 
 func change_scene():
@@ -17,4 +17,4 @@ func change_scene():
 
 
 func change_color(color):
-	$TransitionRect.color = color
+	$Transition/TransitionRect.color = color

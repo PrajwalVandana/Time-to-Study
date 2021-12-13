@@ -17,4 +17,4 @@ func _ready():
 
 func _on_Button_pressed():
 	Transition.change_color(Color(0, 0, 0))
-	Transition.transition_to("res://Main.tscn", "ScoreTransition")
+	Transition.transition_to("res://Home.tscn", "Fade")

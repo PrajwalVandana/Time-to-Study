@@ -1,8 +1,8 @@
-- typing game scoring (with stopwatch)
-- select what you do outside of school every day
-- main menu
+- home sizing bug
+
 - history minigame
-- switch liquid sort to stopwatch scoring
+- fix scoring
+- main menu
 - port vial art
 
 - mask liquid sort particles

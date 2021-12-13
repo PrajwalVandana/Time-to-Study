@@ -16,8 +16,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color( 1, 1, 1, 0.784314 )
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.588235 )
 show_behind_parent = true
 material = SubResource( 2 )
 anchor_right = 1.0
@@ -33,9 +33,11 @@ wait_time = 60.0
 one_shot = true
 
 [node name="TimeDisplay" type="RichTextLabel" parent="."]
-margin_left = 644.0
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -380.0
 margin_top = 40.0
-margin_right = 956.0
+margin_right = -68.0
 margin_bottom = 300.0
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -43,9 +45,11 @@ __meta__ = {
 }
 
 [node name="EndingCellDisplay" type="RichTextLabel" parent="."]
-margin_left = 644.0
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -380.0
 margin_top = 300.0
-margin_right = 956.0
+margin_right = -68.0
 margin_bottom = 560.0
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 __meta__ = {

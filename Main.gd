@@ -48,6 +48,8 @@ func _ready():
 			globals.minigame_color = globals.english_color
 		"res://LiquidSort.tscn":
 			globals.minigame_color = globals.science_color
+	if not Transition.get_node("AmbientAudio").playing:
+		Transition.get_node("AmbientAudio").play()  # FIXME: should play only at beginning
 	print(get_tree().change_scene("res://Day.tscn"))
 
 

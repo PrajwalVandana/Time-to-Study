@@ -16,13 +16,13 @@ var savefile_read = false
 
 # non-volatile
 var happiness = 20
-var english_preparedness = 20
+var english_preparedness = 0
 var english_score = [null, 0]  # in the form [average, number of assignments]
-var math_preparedness = 20
+var math_preparedness = 0
 var math_score = [null, 0]
-var science_preparedness = 20
+var science_preparedness = 0
 var science_score = [null, 0]
-var history_preparedness = 20
+var history_preparedness = 0
 var history_score = [null, 0]
 var day = 0
 
