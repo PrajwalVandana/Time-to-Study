@@ -240,4 +240,4 @@ func animate_button(button):
 
 
 func get_score_text(score):
-	return str(score)+'%' if score != null else "N/A"
+	return str(stepify(score, 0.001))+'%' if score != null else "N/A"

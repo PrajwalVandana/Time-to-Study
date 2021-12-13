@@ -44,11 +44,11 @@ __meta__ = {
 }
 
 [node name="English" type="Button" parent="."]
-anchor_right = 1.0
+anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 97.0
-margin_top = 406.0
-margin_right = -777.0
+margin_top = -194.0
+margin_right = 247.0
 margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
@@ -71,11 +71,11 @@ __meta__ = {
 }
 
 [node name="History" type="Button" parent="."]
-anchor_right = 1.0
+anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 267.0
-margin_top = 406.0
-margin_right = -607.0
+margin_top = -194.0
+margin_right = 417.0
 margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
@@ -98,11 +98,11 @@ __meta__ = {
 }
 
 [node name="Math" type="Button" parent="."]
-anchor_right = 1.0
+anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 437.0
-margin_top = 406.0
-margin_right = -437.0
+margin_top = -194.0
+margin_right = 587.0
 margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
@@ -125,11 +125,13 @@ __meta__ = {
 }
 
 [node name="Science" type="Button" parent="."]
-anchor_right = 1.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.002
 anchor_bottom = 1.0
-margin_left = 607.0
-margin_top = 406.0
-margin_right = -267.0
+margin_left = -417.0
+margin_top = -194.0
+margin_right = -269.048
 margin_bottom = -94.0
 theme = ExtResource( 1 )
 toggle_mode = true
@@ -152,10 +154,12 @@ __meta__ = {
 }
 
 [node name="Relax" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 777.0
-margin_top = 406.0
+margin_left = -247.0
+margin_top = -194.0
 margin_right = -97.0
 margin_bottom = -94.0
 theme = ExtResource( 1 )
@@ -184,8 +188,9 @@ __meta__ = {
 modulate = Color( 1, 1, 1, 0.588235 )
 show_behind_parent = true
 material = SubResource( 1 )
-scale = Vector2( 5.7, 6 )
+scale = Vector2( 5.68889, 6 )
 frames = SubResource( 2 )
+frame = 1
 playing = true
 centered = false
 

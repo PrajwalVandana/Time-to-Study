@@ -37,7 +37,7 @@ func _ready():
 
 	randomize()
 	var minigame = rand_choice(
-		["res://2048.tscn", "res://TypingGame.tscn", "res://LiquidSort.tscn"]
+		["res://2048.tscn", "res://TypingGame.tscn", "res://LiquidSort.tscn", "res://WorldGame.tscn"]
 	)
 	globals.minigame = minigame
 	globals.difficulty = rand_choice(["easy", "medium", "hard"])
@@ -48,6 +48,8 @@ func _ready():
 			globals.minigame_color = globals.english_color
 		"res://LiquidSort.tscn":
 			globals.minigame_color = globals.science_color
+		"res://WorldGame.tscn":
+			globals.minigame_color = globals.history_color
 	if not Transition.get_node("AmbientAudio").playing:
 		Transition.get_node("AmbientAudio").play()  # FIXME: should play only at beginning
 	print(get_tree().change_scene("res://Day.tscn"))
