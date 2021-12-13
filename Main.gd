@@ -37,7 +37,7 @@ func _ready():
 
 	randomize()
 	var minigame = rand_choice(
-		["res://LiquidSort.tscn", "res://2048.tscn", "res://WorldGame.tscn", "res://TypingGame.tscn"]
+		["res://WorldGame.tscn", "res://2048.tscn", "res://LiquidSort.tsn", "res://TypingGame.tscn"]
 	)
 	# var minigame = rand_choice(
 	# 	["res://TypingGame.tscn"]

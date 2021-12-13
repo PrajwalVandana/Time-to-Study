@@ -44,18 +44,18 @@ func _ready():
 
 	var countdown_time
 	match globals.difficulty:
-		'easy':
+		"easy":
 			ending_cell = 64
 			countdown_time = 45
-		'medium':
+		"medium":
 			ending_cell = 128
 			countdown_time = 60
-		'hard':
+		"hard":
 			ending_cell = 128
 			countdown_time = 45
 
 	$EndingCellDisplay.clear()
-	$EndingCellDisplay.append_bbcode("[center]"+"Reach cell: "+"[/center]")
+	$EndingCellDisplay.append_bbcode("[center]" + "Reach cell: " + "[/center]")
 	randomize()
 	init_cells()
 	add_new_cell()
@@ -90,8 +90,23 @@ func get_cell_font(cell):  # NOTE: get_font is reserved
 
 func _draw():
 	var highlight = false
-	draw_style_box(get_style_box(ending_cell), Rect2($EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4, $EndingCellDisplay.rect_size/2))
-	draw_string(get_cell_font(ending_cell), $EndingCellDisplay.rect_position+$EndingCellDisplay.rect_size/4 + offset(ending_cell)+Vector2(12, 0), str(ending_cell))
+	draw_style_box(
+		get_style_box(ending_cell),
+		Rect2(
+			$EndingCellDisplay.rect_position + $EndingCellDisplay.rect_size / 4,
+			$EndingCellDisplay.rect_size / 2
+		)
+	)
+	draw_string(
+		get_cell_font(ending_cell),
+		(
+			$EndingCellDisplay.rect_position
+			+ $EndingCellDisplay.rect_size / 4
+			+ offset(ending_cell)
+			+ Vector2(12, 0)
+		),
+		str(ending_cell)
+	)
 	for r in range(4):
 		for c in range(4):
 			if rects[r][c] == new_cell:
@@ -104,8 +119,8 @@ func _draw():
 
 				# outline cell
 				var outline_rect = rects[r][c][0]
-				outline_rect.position -= Vector2(cell_padding*0.25, cell_padding*0.25)
-				outline_rect.end += Vector2(cell_padding*0.5, cell_padding*0.5)
+				outline_rect.position -= Vector2(cell_padding * 0.25, cell_padding * 0.25)
+				outline_rect.end += Vector2(cell_padding * 0.5, cell_padding * 0.5)
 				draw_style_box(outline_style, outline_rect)
 				draw_style_box(get_style_box(rects[r][c][1]), rects[r][c][0])
 			else:
@@ -129,80 +144,80 @@ func _draw():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	$TimeDisplay.clear()
-	$TimeDisplay.append_bbcode("[center]"+fmt_time($Countdown.time_left)+"[/center]")
+	$TimeDisplay.append_bbcode("[center]" + fmt_time($Countdown.time_left) + "[/center]")
 
 
 func fmt_time(secs):
 	secs = int(secs)
-	return str(secs/60).pad_zeros(1)+":"+str(secs%60).pad_zeros(2)
+	return str(secs / 60).pad_zeros(1) + ":" + str(secs % 60).pad_zeros(2)
 
 
 func _input(event):
 	$Countdown.paused = true
 	var rects_copy = rects.duplicate(true)
-	if event.is_action_pressed('ui_left'):
+	if event.is_action_pressed("ui_left"):
 		for r in range(4):
 			var lst = []
 			for cell in rects[r]:
 				if cell[1] != null:
 					lst.append(cell[1])
-			for _i in range(4-len(lst)):
+			for _i in range(4 - len(lst)):
 				lst.append(null)
 			for c in range(4):
 				rects[r][c][1] = lst[c]
 			for c in range(3):
-				if rects[r][c][1] == rects[r][c+1][1] and rects[r][c][1] != null:
+				if rects[r][c][1] == rects[r][c + 1][1] and rects[r][c][1] != null:
 					rects[r][c][1] *= 2
-					for i in range(c+2, 4):
-						rects[r][i-1][1] = rects[r][i][1]
+					for i in range(c + 2, 4):
+						rects[r][i - 1][1] = rects[r][i][1]
 					rects[r][3][1] = null
-	elif event.is_action_pressed('ui_right'):
+	elif event.is_action_pressed("ui_right"):
 		for r in range(4):
 			var lst = []
 			for cell in rects[r]:
 				if cell[1] != null:
 					lst.append(cell[1])
-			for _i in range(4-len(lst)):
+			for _i in range(4 - len(lst)):
 				lst.insert(0, null)
 			for c in range(4):
 				rects[r][c][1] = lst[c]
 			for c in range(3, 0, -1):
-				if rects[r][c][1] == rects[r][c-1][1] and rects[r][c][1] != null:
+				if rects[r][c][1] == rects[r][c - 1][1] and rects[r][c][1] != null:
 					rects[r][c][1] *= 2
-					for i in range(c-2, -1, -1):
-						rects[r][i+1][1] = rects[r][i][1]
+					for i in range(c - 2, -1, -1):
+						rects[r][i + 1][1] = rects[r][i][1]
 					rects[r][0][1] = null
-	elif event.is_action_pressed('ui_up'):
+	elif event.is_action_pressed("ui_up"):
 		for c in range(4):
 			var lst = []
 			for r in range(4):
 				if rects[r][c][1] != null:
 					lst.append(rects[r][c][1])
-			for _i in range(4-len(lst)):
+			for _i in range(4 - len(lst)):
 				lst.append(null)
 			for r in range(4):
 				rects[r][c][1] = lst[r]
 			for r in range(3):
-				if rects[r][c][1] == rects[r+1][c][1] and rects[r][c][1] != null:
+				if rects[r][c][1] == rects[r + 1][c][1] and rects[r][c][1] != null:
 					rects[r][c][1] *= 2
-					for i in range(r+2, 4):
-						rects[i-1][c][1] = rects[i][c][1]
+					for i in range(r + 2, 4):
+						rects[i - 1][c][1] = rects[i][c][1]
 					rects[3][c][1] = null
-	elif event.is_action_pressed('ui_down'):
+	elif event.is_action_pressed("ui_down"):
 		for c in range(4):
 			var lst = []
 			for r in range(4):
 				if rects[r][c][1] != null:
 					lst.append(rects[r][c][1])
-			for _i in range(4-len(lst)):
+			for _i in range(4 - len(lst)):
 				lst.insert(0, null)
 			for r in range(4):
 				rects[r][c][1] = lst[r]
 			for r in range(3, 0, -1):
-				if rects[r][c][1] == rects[r-1][c][1] and rects[r][c][1] != null:
+				if rects[r][c][1] == rects[r - 1][c][1] and rects[r][c][1] != null:
 					rects[r][c][1] *= 2
-					for i in range(r-2, -1, -1):
-						rects[i+1][c][1] = rects[i][c][1]
+					for i in range(r - 2, -1, -1):
+						rects[i + 1][c][1] = rects[i][c][1]
 					rects[0][c][1] = null
 	else:
 		$Countdown.paused = false
@@ -237,14 +252,20 @@ func rand_choice(lst):
 	return lst[randi() % lst.size()]
 
 
-func neighbor_positions(size, r, c, diagonals=false):
+func neighbor_positions(size, r, c, diagonals = false):
 	var res = []
 	for i in range(-1, 2):
 		for j in range(-1, 2):
-			if (diagonals or not(i and j)) and (r+i in range(size)) and (c+j in range(size)) and (i or j):
-				res.append(Vector2(r+i, c+j))
+			if (
+				(diagonals or not (i and j))
+				and (r + i in range(size))
+				and (c + j in range(size))
+				and (i or j)
+			):
+				res.append(Vector2(r + i, c + j))
 
 	return res
+
 
 func blank_cells():
 	var blank_cells = []
@@ -270,8 +291,7 @@ func init_cells():
 		for c in range(4):
 			rect = Rect2(
 				Vector2(
-					c * cell_size + (c+1) * cell_padding,
-					r * cell_size + (r+1) * cell_padding
+					c * cell_size + (c + 1) * cell_padding, r * cell_size + (r + 1) * cell_padding
 				),
 				Vector2(cell_size, cell_size)
 			)
@@ -303,7 +323,10 @@ func get_score():
 		for c in range(4):
 			if rects[r][c][1] != null:
 				max_cell = max(rects[r][c][1], max_cell)
-	return max_cell*80/ending_cell + globals.math_preparedness
+	return (
+		stepify(max(50, $Countdown.time_left / $Countdown.wait_time * max_cell / ending_cell * 100), 0.01)
+		+ globals.math_preparedness
+	)
 
 
 func _on_Countdown_timeout():
@@ -319,5 +342,8 @@ func update_score(score):
 		globals.math_score = [score, 1]
 		return
 	globals.minigame_score = score
-	globals.math_score[0] = (globals.math_score[0]*globals.math_score[1]+score)/(globals.math_score[1]+1)
+	globals.math_score[0] = (
+		(globals.math_score[0] * globals.math_score[1] + score)
+		/ (globals.math_score[1] + 1)
+	)
 	globals.math_score[1] += 1

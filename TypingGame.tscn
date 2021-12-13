@@ -15,6 +15,8 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+correct_char_color = Color( 0.403922, 1, 0.0705882, 1 )
+untyped_color = Color( 0.956863, 1, 0.898039, 1 )
 
 [node name="TypedWords" type="RichTextLabel" parent="."]
 margin_left = 10.0

@@ -145,7 +145,7 @@ func _input(event):
 
 
 func get_score():
-	return floor($Countdown.time_left*100.0/$Countdown.wait_time) + globals.science_preparedness
+	return stepify(floor($Countdown.time_left*100.0/$Countdown.wait_time) + globals.science_preparedness, 0.01)
 
 
 func _on_Countdown_timeout():

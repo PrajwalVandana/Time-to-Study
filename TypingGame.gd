@@ -106,7 +106,7 @@ func _input(event):
 				)
 		chars_typed += 1
 		if chars_typed == len(chars_to_type):
-			update_score(int(chars_correct*90.0/chars_typed) + globals.english_preparedness)
+			update_score(stepify(int(chars_correct*100.0/chars_typed) + globals.english_preparedness, 0.01))
 			Transition.change_color(globals.minigame_color)
 			Transition.transition_to("res://Score.tscn", transition_anim)
 
