@@ -4,8 +4,8 @@ extends Node2D
 func _ready():
 	globals.day += 1
 	var savefile = File.new()
-	if not savefile.file_exists("save.json") or globals.savefile_read:
-		savefile.open("save.json", File.WRITE)
+	if not savefile.file_exists("user://save.json") or globals.savefile_read:
+		savefile.open("user://save.json", File.WRITE)
 		savefile.store_line(to_json({
 			happiness = globals.happiness,
 			english_preparedness = globals.english_preparedness,
@@ -20,7 +20,7 @@ func _ready():
 		}))
 		globals.savefile_read = true
 	else:
-		savefile.open("save.json", File.READ)
+		savefile.open("user://save.json", File.READ)
 		var savedata = parse_json(savefile.get_line())
 		globals.happiness = savedata.happiness
 		globals.english_preparedness = savedata.english_preparedness
@@ -37,8 +37,11 @@ func _ready():
 
 	randomize()
 	var minigame = rand_choice(
-		["res://2048.tscn", "res://TypingGame.tscn", "res://LiquidSort.tscn", "res://WorldGame.tscn"]
+		["res://LiquidSort.tscn", "res://2048.tscn", "res://WorldGame.tscn", "res://TypingGame.tscn"]
 	)
+	# var minigame = rand_choice(
+	# 	["res://TypingGame.tscn"]
+	# )
 	globals.minigame = minigame
 	globals.difficulty = rand_choice(["easy", "medium", "hard"])
 	match minigame:

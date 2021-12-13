@@ -44,7 +44,7 @@ func _process(delta):
 
 
 func _on_Restart_pressed():
-	print(Directory.new().remove("save.json"))
+	print(Directory.new().remove("user://save.json"))
 	globals.happiness = 20
 	globals.english_preparedness = 0
 	globals.english_score = [null, 0]  # in the form [average, number of assignments]

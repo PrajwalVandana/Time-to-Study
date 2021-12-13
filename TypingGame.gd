@@ -28,15 +28,14 @@ const ignored_chars = [
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
-	font.font_data = load(globals.font_dir)
-	font.size = 90
 	$Words.set("custom_fonts/normal_font", font)
 	# $Words.set("custom_colors/font_color", Color(0.5, 0.5, 0.5))
 	# $Words.modulate.a = words_alpha
 	$TypedWords.set("custom_fonts/normal_font", font)
-
+	font.font_data = load(globals.font_dir)
+	font.size = 90
 	var wordfile = File.new()
-	wordfile.open("assets/words.txt", File.READ)
+	wordfile.open("res://assets/words.csv", File.READ)
 	var words = wordfile.get_as_text().split("\n")
 
 	var words_to_type = PoolStringArray()
@@ -107,7 +106,7 @@ func _input(event):
 				)
 		chars_typed += 1
 		if chars_typed == len(chars_to_type):
-			update_score(int(chars_correct*80.0/chars_typed) + globals.english_preparedness)
+			update_score(int(chars_correct*90.0/chars_typed) + globals.english_preparedness)
 			Transition.change_color(globals.minigame_color)
 			Transition.transition_to("res://Score.tscn", transition_anim)
 

@@ -12,7 +12,7 @@ var player_dir = Vector2(0, -1)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var cities_file = File.new()
-	cities_file.open("assets/world_cities.txt", File.READ)
+	cities_file.open("res://assets/world_cities.csv", File.READ)
 	var population_min = 0
 	match globals.difficulty:
 		"easy":
@@ -37,7 +37,7 @@ func _ready():
 				])
 
 	chosen_city = rand_choice(cities)
-	$Label.text = chosen_city[0].lstrip('"').rstrip('"')
+	$Label.append_bbcode(chosen_city[0].lstrip('"').rstrip('"'))
 
 
 func rand_choice(lst):
