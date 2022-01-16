@@ -1,1 +1,1 @@
-Check out the game at prajwalvandana.gihub.io/game.html
+Check out the game at https://prajwalvandana.github.io/game.html
